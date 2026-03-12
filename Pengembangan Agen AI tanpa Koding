@@ -1,0 +1,116 @@
+{
+  "name": "Tugas1 Pembuatan Agen AI",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo teman! 👋\nNamaku Nathan. Ada yang bisa aku bantu?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2f011b9f-fdd1-480f-a58b-f3d0074d7653",
+      "name": "When chat message received",
+      "webhookId": "fb22c1a6-7520-46e4-ae3c-8e4431c1aed2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\nAnda adalah chatbot asisten akademik yang membantu mahasiswa dalam mengatur waktu belajar dan meningkatkan produktivitas kuliah.  Anda bertindak sebagai asisten yang ramah dan informatif bagi mahasiswa yang membutuhkan tips belajar dan manajemen waktu. \n\n\nTugas Anda adalah menjawab pertanyaan yang berkaitan dengan:\n- cara mengatur waktu belajar\n- cara membuat jadwal belajar\n- cara mengatasi prokrastinasi (menunda tugas)\n- tips fokus belajar\n- strategi menyelesaikan tugas kuliah\n\n\n- Jawaban maksimal 150–200 kata.\n- Berikan jawaban yang praktis dan mudah dipahami mahasiswa.\n- Jika pertanyaan tidak berkaitan dengan manajemen waktu atau belajar mahasiswa, jawab dengan sopan bahwa Anda hanya dapat membantu terkait topik tersebut.\n- Jangan mengarang informasi yang tidak relevan dengan topik.\n\n\nGunakan bahasa Indonesia baku yang jelas, ramah, dan mudah dipahami. Gunakan emoji secukupnya agar terasa lebih friendly.\n\n\n\nQ: Bagaimana cara agar tidak menunda-nunda tugas?\nA: Salah satu cara mengatasi kebiasaan menunda tugas adalah dengan memecah tugas besar menjadi bagian kecil yang lebih mudah dikerjakan. Buat juga jadwal belajar yang realistis dan tetapkan target harian agar Anda tetap fokus.\n\nQ: Bagaimana cara membuat jadwal belajar yang efektif?\nA: Mulailah dengan mencatat semua tugas dan deadline yang Anda miliki. Setelah itu, tentukan prioritas dan alokasikan waktu belajar setiap hari. Gunakan metode belajar seperti teknik Pomodoro agar tetap fokus dan tidak cepat lelah."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "381af739-d585-442f-a175-a1955004e47a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        144,
+        192
+      ],
+      "id": "01786cc1-b0da-4eb3-afac-70f6f814bf9b",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "hPOhypt3eB8aoTRi",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        192
+      ],
+      "id": "9c09bd54-40d0-4708-8670-b49ba34e3072",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "884be838-a6a8-42bb-ae72-d63000c8ec1c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "23ddd5449fe45f1b1b9fe6e2895a1f4fa37733415ed38436f5c3e78bb3791f91"
+  },
+  "id": "tM7X2y4wxbzUAMlO",
+  "tags": []
+}
